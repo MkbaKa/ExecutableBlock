@@ -1,0 +1,25 @@
+plugin-enable:
+  - ' '
+  - '{0} &f已加载... {1}'
+  - ' '
+
+command-block-add: '{0} &f你需要看向一个非空气的方块.'
+command-block-bind-success: '{0} &7已成功将 &e{1} &7绑定至 &f{2} &7!'
+command-block-bound: '{0} &f{1} &7已被 &e{2} &7绑定,若需要替换请先解除绑定!'
+command-block-notbound: '{0} &7方块 &f{1} &7没有被绑定!'
+command-block-unbind-success: '{0} &7已成功将 &e{1} &7从 &f{2} &7解绑!'
+
+command-tool-wand: '{0} &7已将绑定魔杖给予 &e{1}'
+
+command-near-header: '&7----------{0}&7----------'
+command-near-body:
+  - type: JSON
+    text: '[ &a{0} &f已被 &e{1} &f绑定 ]'
+    args:
+      - hover: '&f点击传送'
+        command: '/minecraft:tp {2} {3} {4}'
+command-near-footer: '&7------------------------------------'
+
+command-invalid-player: '{0} &c错误的玩家名! &f{1}'
+
+command-reload: '{0} &f已重载配置文件.'

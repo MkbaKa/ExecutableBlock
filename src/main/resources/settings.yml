@@ -1,0 +1,5 @@
+Storage:
+  # json
+  type: json
+  # 同步间隔 (秒)
+  period: 1800

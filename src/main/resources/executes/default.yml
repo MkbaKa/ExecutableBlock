@@ -1,0 +1,93 @@
+# executes 文件夹下可随意创建子文件夹 以及yml文件
+# 节点名 用于绑定
+Test:
+  ### 触发器
+  # block break 破坏方块时触发
+  # left click 左键点击触发
+  # right click 右键点击触发
+  # move  踩踏触发
+  trigger: left click
+  ### 执行器 ###
+  # 以js: javascript: 开头即执行js脚本
+  # 不写前缀 或以ke: kether: 开头即执行Kether动作
+  executes:
+    # 格式为
+    # - condition: "这里写条件"
+    #   action: |-
+    #     满足条件后执行的动作
+    # 条件自上而下运行  如果满足就不会再执行后续的条件及动作
+    #
+    # 动作内提供一个 event 变量
+    # 用于访问当前事件以获取其内容
+    - condition: "ke: perm condition1"
+      action: |-
+        print &event
+    - condition: |-
+        js: player.hasPermission("condition2")
+      action: |-
+        js: print(event.player.name)
+    # else 分支为 以上条件均不满足时执行的动作
+    - else:
+        action: |-
+          ke: print "test"
+
+# 实现一个破坏后根据权限执行不同命令
+Break:
+  trigger: block break
+  executes:
+    # 如果玩家是2级vip则使用特殊奖池
+    - condition: "ke: perm vip2"
+      # 象征性的往池子里塞一个泥土
+      action: |-
+        set type to random array [ "DIAMOND" "DIRT" "DIAMOND_SWORD" ]
+        command inline "minecraft:give {{ sender }} {{ &type }} 1" as console
+        tell inline "震精! 你居然从里面挖出了一个 {{ &type }}!"
+    # 一级vip
+    - condition: |-
+        js: player.hasPermission("vip1")
+      action: |-
+        js: 
+          const ItemStack = Packages.org.bukkit.inventory.ItemStack
+          const Material = Packages.org.bukkit.Material
+          Bukkit.broadcastMessage(player.name + " 从 " + event.block.type + " 中挖到了一块泥土!")
+          const loc = event.block.location
+          loc.world.dropItem(loc, new ItemStack(Material.DIRT))
+    # 普通玩家
+    - else:
+        # 画个饼先
+        action: |-
+          ke: 
+            tell "你的脸好黑哦, 这么高的概率都挖不到宝物 紫砂吧!"
+            command "suicide" as player
+
+# 像 move 这类高频触发的触发器
+# 可以通过增加冷却的方式避免其频繁触发
+MoveExample:
+  trigger: move
+  executes:
+    # 以下为 kether 与 js 操作冷却的相关配置
+    # 时间单位均为毫秒 (1000ms = 1s)
+    - condition: |-
+        check cooldown get "Test" <= 0
+      action: |-
+        cooldown add "Test" 10000
+        tell "你踩到地雷啦 哈哈哈!"
+        if perm vip2 then {
+          tell "你是尊贵的vip2玩家! 系统贴心的为你减少50%地雷的冷却时间!"
+          cooldown take "Test" 5000
+        }
+        set cd to cooldown get "Test"
+        tell inline "距离下次地雷引爆还有 {{ math &cd / 1000 }} 秒!"
+        command inline "kill {{ sender }}" as console
+    - condition: |-
+        js: CooldownManager.isTimeout(player.uniqueId, "MoveExample")
+      action: |-
+        js:
+          const uuid = player.uniqueId
+          CooldownManager.addCooling(uuid, "MoveExample", 10000)
+          if (player.hasPermission("vip1")) {
+            player.sendMessage("你是尊贵的vip1玩家! 系统贴心的为你减少25%地雷的冷却时间!")
+            CooldownManager.takeCooling(uuid, "MoveExample", 2500)
+          }
+          player.sendMessage("距离下次地雷引爆还有 " + (CooldownManager.getTime(uuid, "MoveExample") / 1000) + " 秒!")
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill " + player.name)
