@@ -52,10 +52,13 @@ object Settings {
 
     fun reload() {
         settings.reload()
+
         releaseResourceFile("executes/default.yml", replace = false)
         releaseResourceFile("global/example.yml", replace = false)
+
         executes.clear()
         globalExecutes.clear()
+
         loaders.forEach { af ->
             af.file.executeSubFiles { file ->
                 if (file.extension != "yml") return@executeSubFiles

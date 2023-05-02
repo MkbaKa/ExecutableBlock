@@ -12,7 +12,7 @@ import taboolib.module.configuration.Type
 import taboolib.module.configuration.util.asMap
 import java.util.*
 
-object JsonBlockStorage : FileStorage() {
+object JsonStorage : FileStorage() {
 
     override val folder by lazy {
         newFile(getDataFolder(), "storage", create = true, folder = true)

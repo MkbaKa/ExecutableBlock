@@ -9,6 +9,13 @@ import taboolib.platform.util.sendLang
 
 object Search {
 
+    /**
+     * 获取附近已绑定的方块
+     * @param [origin] 中心点
+     * @param [distance] 距离
+     * @param [execKey] execute节点
+     * @return [List<Location>]
+     */
     fun getNearBlock(origin: Location, distance: Double, execKey: String? = null): List<Location> {
         val locs = BlockManager.getBoundLocations()
         val box = BoundingBox.of(origin, distance, distance, distance)
@@ -19,6 +26,11 @@ object Search {
         }
     }
 
+    /**
+     * 把坐标格式化发送给目标
+     * @param [sender] 目标
+     * @param [locs] 坐标
+     */
     fun show(sender: CommandSender, locs: List<Location>) {
         sender.sendLang("command-near-header", prefix)
         locs.forEach {

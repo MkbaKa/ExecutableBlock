@@ -1,9 +1,26 @@
-# global 文件夹用于定义全局监听
-# 某些触发频率极高的事件不建议在此使用,除非你知道你在写什么
+# executes 文件夹下可随意创建子文件夹 以及yml文件
+# 节点名 用于绑定
 GlobalTest:
   ### 触发器 详情请看 executes/default.yml
-  trigger: left click
+  trigger: block break
   ### 继承执行器
-  # 若不写此节点
-  # 请按照正常 executes 的格式进行书写
   extend: Test
+
+# 禁止玩家在某个区域内的移动
+AntiMove:
+  trigger: move
+  executes:
+    # kether 检测区域例子
+    - condition: |-
+        print inRegion region "test"
+        inRegion region "test"
+      action: |-
+        tell color "&c抱歉, 该区域暂未开放."
+        command inline "minecraft:kill {{ sender }}" as console
+    # javascript 判断玩家是否在某个区域
+    - condition: |-
+        js: RegionManager.inRegion(event.to, "test")
+      action: |-
+        js:
+          player.sendMessage("§a前面的区域以后再来探索吧！")
+          event.setCancelled(true)

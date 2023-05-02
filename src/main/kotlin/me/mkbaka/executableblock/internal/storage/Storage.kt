@@ -2,9 +2,9 @@ package me.mkbaka.executableblock.internal.storage
 
 import me.mkbaka.executableblock.internal.block.BlockManager
 import me.mkbaka.executableblock.internal.extension.cooldown.Cooldown
-import me.mkbaka.executableblock.internal.storage.impl.JsonBlockStorage
 import me.mkbaka.executableblock.internal.settings.Settings
 import me.mkbaka.executableblock.internal.settings.Settings.settings
+import me.mkbaka.executableblock.internal.storage.impl.JsonStorage
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import taboolib.common.LifeCycle
@@ -13,7 +13,7 @@ import taboolib.common.platform.function.submitAsync
 import taboolib.common.platform.service.PlatformExecutor
 import taboolib.common5.cdouble
 import taboolib.common5.cfloat
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -67,7 +67,7 @@ abstract class Storage {
         val inst by lazy {
             val type = settings.getString("Storage.type", "json")!!
             when (type.lowercase()) {
-                "json" -> JsonBlockStorage
+                "json" -> JsonStorage
                 else -> error("未支持的存储类型 $type")
             }
         }

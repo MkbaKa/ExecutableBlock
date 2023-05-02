@@ -39,6 +39,11 @@ object CopyWand {
         }
     }
 
+    /**
+     * 给他一把神奇魔杖
+     * @param [player] 玩家
+     * @param [exec] execute执行节点
+     */
     fun giveCopyWand(player: Player, exec: String) {
         player.giveItem(getWandItem(exec))
     }

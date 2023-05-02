@@ -8,7 +8,6 @@ import me.mkbaka.executableblock.internal.trigger.TriggerManager
 import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.event.Event
-import org.bukkit.event.player.PlayerMoveEvent
 import java.util.concurrent.ConcurrentHashMap
 
 object BlockManager {
@@ -21,7 +20,6 @@ object BlockManager {
      */
     fun callExecute(location: Location? = null, event: BukkitEventAdapter) {
         if (location == null || !locCaches.containsKey(location)) {
-            if (event.event is PlayerMoveEvent) return
             val trigger = TriggerManager.eventToTrigger[event.event::class.java]!!
             Settings.globalExecutes[trigger]?.forEach {
                 it.value.run(event)

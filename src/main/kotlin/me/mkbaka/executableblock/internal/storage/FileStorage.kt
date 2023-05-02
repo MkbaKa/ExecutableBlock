@@ -1,6 +1,6 @@
 package me.mkbaka.executableblock.internal.storage
 
-import me.mkbaka.executableblock.internal.storage.impl.JsonBlockStorage
+import me.mkbaka.executableblock.internal.storage.impl.JsonStorage
 import taboolib.common.io.newFile
 import taboolib.module.configuration.Configuration
 import taboolib.module.configuration.Type
@@ -14,7 +14,7 @@ abstract class FileStorage : Storage() {
     abstract val folder: File
 
     open val String.toStorageFile: File
-        get() = files.getOrPut(this) { newFile(JsonBlockStorage.folder, "$this.json", create = true) }
+        get() = files.getOrPut(this) { newFile(JsonStorage.folder, "$this.json", create = true) }
 
     open val String.toConfiguration: Configuration
         get() = configs.getOrPut(this) { Configuration.loadFromFile(toStorageFile, Type.JSON) }
