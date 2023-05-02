@@ -16,13 +16,6 @@ import java.util.concurrent.TimeUnit
 object CoolCommand {
 
     @CommandBody
-    val test = subCommand {
-        execute<ProxyPlayer> { sender, context, argument ->
-            editCool(EditType.ADD, sender.uniqueId, "test", 10000)
-        }
-    }
-
-    @CommandBody
     val add = subCommand {
         dynamic("player") {
             suggestPlayers()

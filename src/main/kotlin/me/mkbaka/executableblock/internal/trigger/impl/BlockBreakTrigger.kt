@@ -9,7 +9,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.block.BlockBreakEvent
 
-@AutoRegister("block break")
+@AutoRegister("block break", alias = ["break block"])
 object BlockBreakTrigger : BukkitTrigger() {
 
     override val eventClass: Class<out Event>
@@ -19,8 +19,8 @@ object BlockBreakTrigger : BukkitTrigger() {
         return ((event as BukkitEventAdapter).event as? BlockBreakEvent)?.block
     }
 
-    override fun getPlayer(event: EventAdapter): Player? {
-        return ((event as BukkitEventAdapter).event as? BlockBreakEvent)?.player
+    override fun getPlayer(event: EventAdapter): Player {
+        return ((event as BukkitEventAdapter).event as BlockBreakEvent).player
     }
 
 }

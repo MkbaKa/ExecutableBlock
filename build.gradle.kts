@@ -19,7 +19,7 @@ taboolib {
     install("expansion-command-helper")
     options("skip-kotlin-relocate")
     classifier = null
-    version = "6.0.10-114"
+    version = "6.0.10-117"
 
     relocate("org.openjdk", "executableblock.org.openjdk")
     description {

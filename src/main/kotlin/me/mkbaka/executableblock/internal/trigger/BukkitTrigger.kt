@@ -11,13 +11,11 @@ import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.function.registerBukkitListener
 import taboolib.library.reflex.Reflex.Companion.invokeMethod
 
-abstract class BukkitTrigger : Trigger {
-
-    abstract val eventClass: Class<out Event>
+abstract class BukkitTrigger : Trigger<Event> {
 
     override fun call(event: EventAdapter) {
         val loc = getBlock(event)?.location ?: return
-        BlockManager.callLocationExecute(loc, event as BukkitEventAdapter)
+        BlockManager.callExecute(loc, event as BukkitEventAdapter)
     }
 
     /**
@@ -54,7 +52,7 @@ abstract class BukkitTrigger : Trigger {
             eventClass, EventPriority.LOWEST, true
         ) {
             val adapter = BukkitEventAdapter(it)
-            if (!condition(adapter)) return@registerBukkitListener
+            if (!condition(adapter)) return@registerBukkitListener BlockManager.callExecute(null, adapter)
 
             call(adapter)
         }

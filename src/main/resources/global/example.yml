@@ -1,0 +1,9 @@
+# global 文件夹用于定义全局监听
+# 某些触发频率极高的事件不建议在此使用,除非你知道你在写什么
+GlobalTest:
+  ### 触发器 详情请看 executes/default.yml
+  trigger: left click
+  ### 继承执行器
+  # 若不写此节点
+  # 请按照正常 executes 的格式进行书写
+  extend: Test

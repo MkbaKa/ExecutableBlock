@@ -2,10 +2,6 @@ package me.mkbaka.executableblock.internal.extension.cooldown.support
 
 import me.mkbaka.executableblock.command.CoolCommand
 import me.mkbaka.executableblock.command.CoolCommand.editCool
-import taboolib.common.platform.function.info
-import taboolib.common5.clong
-import taboolib.library.kether.ArgTypes
-import taboolib.library.kether.ParsedAction
 import taboolib.module.kether.*
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
@@ -52,7 +48,7 @@ class CooldownKether {
                 "get" -> Get(source)
                 "add" -> Add(source, it.nextLong())
                 "take" -> Take(source, it.nextLong())
-                else -> error("Unknow action type $action")
+                else -> error("错误的的动作类型 $action")
             }
         }
     }

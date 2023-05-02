@@ -23,7 +23,10 @@ class AutoRegisterFrame(
     init {
         scanner.scanClasses(basePackageName).forEach { clazz ->
             when {
-                clazz.isSubclassOf(Trigger::class) -> TriggerManager.register(clazz) { it.bindToEvent() }
+                clazz.isSubclassOf(Trigger::class) -> TriggerManager.register(clazz) {
+                    it.bindToEvent()
+                    TriggerManager.eventToTrigger[it.eventClass] = it
+                }
 
                 clazz.isSubclassOf(Execute::class) -> ExecuteManager.register(clazz)
             }
