@@ -44,7 +44,7 @@ object RegionManager {
      * @return [Boolean]
      */
     fun inRegion(loc: Location): Boolean {
-        return RegionHook.inst?.inRegion(loc) ?: false
+        return RegionHook.inst?.inRegion(loc) ?: error("未找到已支持的区域插件, 请检查插件列表 或删掉相关配置.")
     }
 
     /**
@@ -54,7 +54,7 @@ object RegionManager {
      * @return [Boolean]
      */
     fun inRegion(loc: Location, region: String): Boolean {
-        return if (region.isEmpty()) inRegion(loc) else RegionHook.inst?.inRegion(loc, region) ?: false
+        return if (region.isEmpty()) inRegion(loc) else RegionHook.inst?.inRegion(loc, region) ?: error("未找到已支持的区域插件, 请检查插件列表 或删掉相关配置.")
     }
 
     /**
@@ -72,7 +72,7 @@ object RegionManager {
      * @return [Collection<Region>]
      */
     fun getRegionsAt(loc: Location): Collection<Region> {
-        return RegionHook.inst?.getRegionsAt(loc) ?: emptySet()
+        return RegionHook.inst?.getRegionsAt(loc) ?: error("未找到已支持的区域插件, 请检查插件列表 或删掉相关配置.")
     }
 
     /**
