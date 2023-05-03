@@ -13,7 +13,6 @@ AntiMove:
     # kether 检测区域例子
     # kether: https://github.com/MkbaKa/ExecutableBlock/blob/main/src/main/kotlin/me/mkbaka/executableblock/internal/hook/region/impl/RegionKether.kt
     - condition: |-
-        print inRegion region "test"
         inRegion region "test"
       action: |-
         tell color "&c抱歉, 该区域暂未开放."
