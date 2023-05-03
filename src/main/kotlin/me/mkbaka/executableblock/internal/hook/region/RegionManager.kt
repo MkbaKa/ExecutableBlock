@@ -93,13 +93,15 @@ object RegionManager {
 
             fromRegions.forEach { region ->
                 if (!toRegions.contains(region)) {
-                    RegionEvent.Exit(it.player, region)
+                    val event = RegionEvent.Exit(it.player, region).apply { call() }
+                    if (event.isCancelled) it.isCancelled = true
                 }
             }
 
             toRegions.forEach { region ->
                 if (!fromRegions.contains(region)) {
-                    RegionEvent.Enter(it.player, region)
+                    val event = RegionEvent.Enter(it.player, region).apply { call() }
+                    if (event.isCancelled) it.isCancelled = true
                 }
             }
 
