@@ -67,6 +67,7 @@ MoveExample:
   executes:
     # 以下为 kether 与 js 操作冷却的相关配置
     # 时间单位均为毫秒 (1000ms = 1s)
+    # kether 操作冷却: https://github.com/MkbaKa/ExecutableBlock/blob/main/src/main/kotlin/me/mkbaka/executableblock/internal/extension/cooldown/support/CooldownKether.kt
     - condition: |-
         check cooldown get "Test" <= 0
       action: |-
@@ -79,6 +80,7 @@ MoveExample:
         set cd to cooldown get "Test"
         tell inline "距离下次地雷引爆还有 {{ math &cd / 1000 }} 秒!"
         command inline "kill {{ sender }}" as console
+    # js 操作冷却: https://github.com/MkbaKa/ExecutableBlock/blob/main/src/main/kotlin/me/mkbaka/executableblock/internal/extension/cooldown/CooldownManager.kt
     - condition: |-
         js: CooldownManager.isTimeout(player.uniqueId, "MoveExample")
       action: |-

@@ -38,6 +38,9 @@ class CooldownKether {
 
         /**
          * cooldown [action] [source] <time>
+         * cooldown get "xxx"
+         * cooldown add "xxx" 1000
+         * cooldown take "xxx" 1000
          */
         @KetherParser(["cooldown"], namespace = "ExecutableBlock", shared = true)
         fun parser() = scriptParser {

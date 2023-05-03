@@ -11,6 +11,7 @@ AntiMove:
   trigger: move
   executes:
     # kether 检测区域例子
+    # kether: https://github.com/MkbaKa/ExecutableBlock/blob/main/src/main/kotlin/me/mkbaka/executableblock/internal/hook/region/impl/RegionKether.kt
     - condition: |-
         print inRegion region "test"
         inRegion region "test"
@@ -18,6 +19,7 @@ AntiMove:
         tell color "&c抱歉, 该区域暂未开放."
         command inline "minecraft:kill {{ sender }}" as console
     # javascript 判断玩家是否在某个区域
+    # 区域相关方法看这里: https://github.com/MkbaKa/ExecutableBlock/blob/main/src/main/kotlin/me/mkbaka/executableblock/internal/hook/region/RegionManager.kt
     - condition: |-
         js: RegionManager.inRegion(event.to, "test")
       action: |-
