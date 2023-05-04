@@ -18,3 +18,8 @@ CustomTrigger:
     # 获取方块
     getBlock: |-
       event.entity.location.block
+    # 事件触发的条件
+    # super.condition() 指的是:
+    # https://github.com/MkbaKa/ExecutableBlock/blob/main/src/main/kotlin/me/mkbaka/executableblock/internal/trigger/BukkitTrigger.kt#23
+    condition: |-
+      super.condition()
