@@ -9,6 +9,7 @@ import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.function.registerBukkitListener
+import taboolib.common.platform.function.releaseResourceFile
 
 /**
  * 区域管理
@@ -83,6 +84,7 @@ object RegionManager {
     @Awake(LifeCycle.ACTIVE)
     fun reg() {
         if (RegionHook.inst == null) return
+        releaseResourceFile("global/AntiMove.yml", replace = false)
 
         registerBukkitListener(
             PlayerMoveEvent::class.java, EventPriority.HIGHEST, false

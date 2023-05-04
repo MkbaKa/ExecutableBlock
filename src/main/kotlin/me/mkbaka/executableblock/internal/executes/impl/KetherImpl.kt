@@ -18,7 +18,7 @@ object KetherImpl : Execute() {
                     vars(args)
                     namespace(listOf("ExecutableBlock"))
                 }
-            ).get().cbool
+            ).thenApply { it.cbool }.get()
         } catch (e: Throwable) {
             e.printStackTrace()
             false

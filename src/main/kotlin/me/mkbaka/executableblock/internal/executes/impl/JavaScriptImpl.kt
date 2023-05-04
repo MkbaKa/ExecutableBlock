@@ -6,6 +6,8 @@ import me.mkbaka.executableblock.internal.executes.Execute
 import me.mkbaka.executableblock.internal.extension.cooldown.CooldownManager
 import me.mkbaka.executableblock.internal.hook.nashorn.NashornHook
 import me.mkbaka.executableblock.internal.hook.region.RegionManager
+import me.mkbaka.executableblock.internal.utils.FileUtil
+import me.mkbaka.executableblock.internal.utils.Util
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import taboolib.common5.cbool
@@ -18,7 +20,9 @@ object JavaScriptImpl : Execute() {
         "Bukkit" to Bukkit.getServer(),
         "plugin" to ExecutableBlock.plugin,
         "CooldownManager" to CooldownManager,
-        "RegionManager" to RegionManager
+        "RegionManager" to RegionManager,
+        "Util" to Util,
+        "FileUtil" to FileUtil
     )
 
     override fun eval(script: String, sender: CommandSender, args: HashMap<String, Any>): Boolean {
