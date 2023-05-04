@@ -36,8 +36,10 @@ class CustomTrigger(val config: Configuration, val section: String) : BukkitTrig
     override fun condition(event: EventAdapter): Boolean {
         if (event !is BukkitEventAdapter) return false
         if (!config.isString("$section.override.condition")) return super.condition(event)
+        var script = config.getString("$section.override.condition")!!
+        if (script.contains("super.condition()")) script = script.replace("super.condition()", super.condition(event).toString())
         return JavaScriptImpl.eval(
-            config.getString("$section.override.condition")!!,
+            script,
             getPlayer(event),
             args = hashMapOf("event" to event.event)
         )
