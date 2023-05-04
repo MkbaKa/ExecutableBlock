@@ -1,0 +1,15 @@
+Test:
+  trigger: [ on death ]
+  executes:
+    - condition: "ke: perm condition1"
+      action: |-
+        broadcast inline "{{ sender }} 居然寄了, 快嘲笑他！"
+    - condition: |-
+        js: player.hasPermission("condition2")
+      action: |-
+        js: 
+          Bukkit.broadcastMessage(player.name + " 死在了 §e" + Util.format(player.location))
+    # else 分支为 以上条件均不满足时执行的动作
+    - else:
+        action: |-
+          ke: print "test"

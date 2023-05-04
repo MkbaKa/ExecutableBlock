@@ -7,8 +7,6 @@ import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
-import taboolib.common.platform.event.EventPriority
-import taboolib.common.platform.function.registerBukkitListener
 import taboolib.library.reflex.Reflex.Companion.invokeMethod
 
 abstract class BukkitTrigger : Trigger<Event> {
@@ -48,14 +46,7 @@ abstract class BukkitTrigger : Trigger<Event> {
      * 开摆!
      */
     override fun bindToEvent() {
-        registerBukkitListener(
-            eventClass, EventPriority.LOWEST, true
-        ) {
-            val adapter = BukkitEventAdapter(it)
-            if (!condition(adapter)) return@registerBukkitListener BlockManager.callExecute(null, adapter)
-
-            call(adapter)
-        }
+        TriggerManager.bindToEvent(this)
     }
 
 }

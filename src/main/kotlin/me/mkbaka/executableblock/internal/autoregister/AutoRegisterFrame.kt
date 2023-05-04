@@ -3,6 +3,8 @@ package me.mkbaka.executableblock.internal.autoregister
 import me.mkbaka.executableblock.api.block.Trigger
 import me.mkbaka.executableblock.internal.executes.Execute
 import me.mkbaka.executableblock.internal.executes.ExecuteManager
+import me.mkbaka.executableblock.internal.settings.Configurations
+import me.mkbaka.executableblock.internal.settings.SettingManager
 import me.mkbaka.executableblock.internal.trigger.TriggerManager
 import taboolib.common.env.RuntimeDependency
 import kotlin.reflect.full.isSubclassOf
@@ -29,6 +31,8 @@ class AutoRegisterFrame(
                 }
 
                 clazz.isSubclassOf(Execute::class) -> ExecuteManager.register(clazz)
+
+                clazz.isSubclassOf(Configurations::class) -> SettingManager.register(clazz)
             }
         }
     }

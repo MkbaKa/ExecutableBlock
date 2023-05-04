@@ -2,8 +2,10 @@ package me.mkbaka.executableblock.internal.executes
 
 import org.bukkit.command.CommandSender
 
-abstract class Execute {
+interface Execute {
 
-    abstract fun eval(script: String, sender: CommandSender, args: HashMap<String, Any>): Boolean
+    fun eval(script: String, sender: CommandSender? = null, args: HashMap<String, Any>): Boolean
+
+    fun result(script: String, sender: CommandSender? = null, args: HashMap<String, Any> = hashMapOf()): Any?
 
 }

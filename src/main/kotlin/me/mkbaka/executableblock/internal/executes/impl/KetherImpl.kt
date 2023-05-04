@@ -8,20 +8,23 @@ import taboolib.module.kether.KetherShell
 import taboolib.module.kether.ScriptOptions
 
 @AutoRegister("ke", alias = ["kether", "ks"])
-object KetherImpl : Execute() {
+object KetherImpl : Execute {
 
-    override fun eval(script: String, sender: CommandSender, args: HashMap<String, Any>): Boolean {
+    override fun eval(script: String, sender: CommandSender?, args: HashMap<String, Any>): Boolean {
+        return result(script, sender, args).cbool
+    }
+
+    override fun result(script: String, sender: CommandSender?, args: HashMap<String, Any>): Any? {
         return try {
             KetherShell.eval(
                 script, ScriptOptions.new {
-                    sender(sender)
+                    sender?.let { sender(it) }
                     vars(args)
                     namespace(listOf("ExecutableBlock"))
                 }
-            ).thenApply { it.cbool }.get()
+            ).get()
         } catch (e: Throwable) {
             e.printStackTrace()
-            false
         }
     }
 

@@ -1,0 +1,20 @@
+### 自定义触发器 需要一定开发基础
+## 暂不支持 kether
+# 注册后即可在 executes 及 global 文件夹内使用
+# 节点名
+CustomTrigger:
+  ### 触发器的名字
+  triggers: [ on death, player death ]
+  ### 绑定到事件
+  # 详情请看 https://bukkit.windit.net/javadoc/org/bukkit/event/entity/PlayerDeathEvent.html
+  bind: 'org.bukkit.event.entity.PlayerDeathEvent'
+  ### 重写方法
+  ## 提供的变量
+  # event - 当前事件
+  override:
+    # 获取玩家
+    getPlayer: |-
+      event.entity
+    # 获取方块
+    getBlock: |-
+      event.entity.location.block

@@ -2,7 +2,7 @@ package me.mkbaka.executableblock.command
 
 import me.mkbaka.executableblock.ExecutableBlock.prefix
 import me.mkbaka.executableblock.internal.block.BlockManager
-import me.mkbaka.executableblock.internal.settings.Settings
+import me.mkbaka.executableblock.internal.settings.SettingManager
 import me.mkbaka.executableblock.internal.utils.Util.format
 import org.bukkit.Material
 import org.bukkit.block.Block
@@ -17,11 +17,11 @@ object BlockCommand {
     @CommandBody
     val bind = subCommand {
         dynamic("execute") {
-            suggestion<ProxyPlayer> { sender, context ->
-                Settings.executes.keys.toList()
+            suggestion<ProxyPlayer> { _, _ ->
+                SettingManager.getAllExecutorKeys()
             }
 
-            execute<ProxyPlayer> { sender, context, argument ->
+            execute<ProxyPlayer> { sender, context, _ ->
                 val block = sender.getTargetBlock()
                 if (block.type == Material.AIR) return@execute sender.sendLang("command-block-add", prefix)
                 if (BlockManager.isExecutableBlock(block)) return@execute sender.sendLang(
@@ -39,7 +39,7 @@ object BlockCommand {
 
     @CommandBody
     val unbind = subCommand {
-        execute<ProxyPlayer> { sender, context, argument ->
+        execute<ProxyPlayer> { sender, _, _ ->
             val block = sender.getTargetBlock()
             if (block.type == Material.AIR) return@execute sender.sendLang("command-block-add", prefix)
             if (!BlockManager.isExecutableBlock(block)) return@execute sender.sendLang(

@@ -8,21 +8,34 @@ import kotlin.reflect.full.isSubclassOf
 
 abstract class Registerable<T : Any> {
 
-    protected val registers = ConcurrentHashMap<String, T>()
+    val registers = ConcurrentHashMap<String, T>()
 
     abstract val root: KClass<T>
-
-    fun register(clazz: KClass<*>, callback: (T) -> Unit = {}) {
+    open fun register(clazz: KClass<*>, callback: (T) -> Unit = {}) {
         if (clazz.isSubclassOf(root)) {
             val inst = clazz.objectInstance as? T ?: return
             val register = clazz.findAnnotations(AutoRegister::class).first()
 
-            register.alias.plus(register.name).forEach {
-                registers[it] = inst
-            }
+            register(register.alias.plus(register.name), inst)
 
             callback(inst)
         }
+    }
+
+    fun register(names: Collection<String>, inst: T, callback: (T) -> Unit = {}) {
+        names.forEach {
+            if (registers.containsKey(it)) registers.remove(it)
+            registers[it] = inst
+        }
+        callback(inst)
+    }
+
+    fun register(names: Array<String>, inst: T, callback: (T) -> Unit = {}) {
+        names.forEach {
+            if (registers.containsKey(it)) registers.remove(it)
+            registers[it] = inst
+        }
+        callback(inst)
     }
 
 }

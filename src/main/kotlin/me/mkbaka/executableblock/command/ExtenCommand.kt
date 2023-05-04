@@ -3,7 +3,7 @@ package me.mkbaka.executableblock.command
 import me.mkbaka.executableblock.ExecutableBlock.prefix
 import me.mkbaka.executableblock.internal.extension.tool.copy.CopyWand
 import me.mkbaka.executableblock.internal.extension.tool.search.Search
-import me.mkbaka.executableblock.internal.settings.Settings
+import me.mkbaka.executableblock.internal.settings.SettingManager
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyCommandSender
@@ -21,11 +21,11 @@ object ExtenCommand {
             suggestPlayers()
 
             dynamic("execute") {
-                suggestion<ProxyCommandSender> { sender, context ->
-                    Settings.executes.keys.toList()
+                suggestion<ProxyCommandSender> { _, _ ->
+                    SettingManager.getAllExecutorKeys()
                 }
 
-                execute<ProxyCommandSender> { sender, context, argument ->
+                execute<ProxyCommandSender> { sender, context, _ ->
                     val player = Bukkit.getPlayerExact(context["player"]) ?: return@execute sender.sendLang(
                         "command-invalid-player",
                         prefix, context["player"]
@@ -43,11 +43,11 @@ object ExtenCommand {
             suggestPlayers()
 
             dynamic("radius") {
-                suggestionUncheck<ProxyCommandSender> { sender, context ->
+                suggestionUncheck<ProxyCommandSender> { _, _ ->
                     listOf("5")
                 }
 
-                execute<ProxyCommandSender> { sender, context, argument ->
+                execute<ProxyCommandSender> { sender, context, _ ->
                     val player = Bukkit.getPlayerExact(context["player"]) ?: return@execute sender.sendLang(
                         "command-invalid-player",
                         prefix, context["player"]
@@ -56,11 +56,11 @@ object ExtenCommand {
                 }
 
                 dynamic("execute") {
-                    suggestion<ProxyCommandSender> { sender, context ->
-                        Settings.executes.keys.toList()
+                    suggestion<ProxyCommandSender> { _, _ ->
+                        SettingManager.getAllExecutorKeys()
                     }
 
-                    execute<ProxyCommandSender> { sender, context, argument ->
+                    execute<ProxyCommandSender> { sender, context, _ ->
                         val player = Bukkit.getPlayerExact(context["player"]) ?: return@execute sender.sendLang(
                             "command-invalid-player",
                             prefix, context["player"]

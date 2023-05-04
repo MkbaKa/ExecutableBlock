@@ -7,7 +7,7 @@ import me.mkbaka.executableblock.internal.utils.FileUtil.getTrigger
 import org.bukkit.entity.Player
 import taboolib.library.configuration.ConfigurationSection
 
-class ExecutableBlock(val root: ConfigurationSection, trigger: BukkitTrigger? = null) {
+class Executor(val root: ConfigurationSection, trigger: BukkitTrigger? = null) {
 
     val trigger = trigger ?: root.getTrigger()
     private val executes = root.getMapList("executes").map { Action(it) }

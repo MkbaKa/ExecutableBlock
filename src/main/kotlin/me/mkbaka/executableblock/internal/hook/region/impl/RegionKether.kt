@@ -11,11 +11,11 @@ class RegionKether {
 
     class InRegion(val region: ParsedAction<*>) : ScriptAction<Boolean>() {
         override fun run(frame: ScriptFrame): CompletableFuture<Boolean> {
-            var result = false
+            val completableFuture = CompletableFuture<Boolean>()
             frame.newFrame(region).run<String>().thenApply { region ->
-                result = RegionManager.inRegion(frame.player().cast<Player>(), region)
+                completableFuture.complete(RegionManager.inRegion(frame.player().cast<Player>(), region))
             }
-            return CompletableFuture.completedFuture(result)
+            return completableFuture
         }
     }
 

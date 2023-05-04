@@ -2,6 +2,8 @@
 # 节点名 用于绑定
 GlobalTest:
   ### 触发器 详情请看 executes/default.yml
+  ## 某些高频触发器 如move 不建议使用全局监听 除非你知道自己在做什么
   trigger: block break
   ### 继承执行器
+  ## 若不写 extend 节点 请按照正常的 executes 格式来配置
   extend: Test

@@ -14,7 +14,7 @@ import taboolib.common5.cbool
 import javax.script.SimpleBindings
 
 @AutoRegister("js", alias = ["javascript"])
-object JavaScriptImpl : Execute() {
+object JavaScriptImpl : Execute {
 
     private val bindings = hashMapOf(
         "Bukkit" to Bukkit.getServer(),
@@ -25,15 +25,18 @@ object JavaScriptImpl : Execute() {
         "FileUtil" to FileUtil
     )
 
-    override fun eval(script: String, sender: CommandSender, args: HashMap<String, Any>): Boolean {
+    override fun eval(script: String, sender: CommandSender?, args: HashMap<String, Any>): Boolean {
+        return result(script, sender, args).cbool
+    }
+
+    override fun result(script: String, sender: CommandSender?, args: HashMap<String, Any>): Any? {
         return try {
             NashornHook.inst.compile(script).eval(SimpleBindings(args.apply {
-                this["player"] = sender
+                sender?.let { this["player"] = it }
                 putAll(bindings)
-            })).cbool
+            }))
         } catch (e: Throwable) {
             e.printStackTrace()
-            false
         }
     }
 

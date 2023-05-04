@@ -1,32 +1,32 @@
 package me.mkbaka.executableblock.internal.block
 
 import me.mkbaka.executableblock.api.block.Trigger
-import me.mkbaka.executableblock.internal.settings.Settings
-import me.mkbaka.executableblock.internal.storage.Storage
+import me.mkbaka.executableblock.internal.settings.SettingManager
 import me.mkbaka.executableblock.internal.trigger.BukkitEventAdapter
 import me.mkbaka.executableblock.internal.trigger.TriggerManager
 import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.event.Event
 import java.util.concurrent.ConcurrentHashMap
+import me.mkbaka.executableblock.internal.storage.Storage.Companion.inst as storage
 
 object BlockManager {
 
     private val locCaches = ConcurrentHashMap<Location, String>()
-    private val storage = Storage.inst
 
     /**
-     * 运行指定坐标绑定的 Execute 动作
+     * 运行触发器绑定的executor
      */
     fun callExecute(location: Location? = null, event: BukkitEventAdapter) {
         if (location == null || !locCaches.containsKey(location)) {
-            val trigger = TriggerManager.eventToTrigger[event.event::class.java]!!
-            Settings.globalExecutes[trigger]?.forEach {
-                it.value.run(event)
+            val trigger = TriggerManager.eventToTrigger[event.event::class.java] ?: return
+            SettingManager.getGlobalExecutors(trigger)?.forEach { (_, exec) ->
+                exec.run(event)
             }
             return
         }
-        Settings.executes[locCaches[location]]?.run(event)
+        val exec = getBoundExecute(location) ?: return
+        SettingManager.getExecutor(exec)?.run(event)
     }
 
     /**
@@ -47,7 +47,7 @@ object BlockManager {
     }
 
     fun bindToLocation(node: String, location: Location): Boolean {
-        if (!Settings.executes.containsKey(node)) return false
+        if (!SettingManager.hasExecutor(node)) return false
         locCaches[location] = node
         storage.updateToCache(node, location)
         return true
@@ -93,7 +93,8 @@ object BlockManager {
      */
     fun isSameTrigger(loc: Location, trigger: Trigger<Event>): Boolean {
         if (!locCaches.containsKey(loc)) return false
-        return Settings.executes[locCaches[loc]]?.trigger?.equals(trigger) ?: false
+        val exec = getBoundExecute(loc) ?: return false
+        return SettingManager.getExecutor(exec)?.trigger?.equals(trigger) ?: false
     }
 
     fun isSameTrigger(block: Block, trigger: Trigger<Event>): Boolean {
