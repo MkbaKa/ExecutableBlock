@@ -4,14 +4,14 @@ import me.mkbaka.executableblock.ExecutableBlock
 import me.mkbaka.executableblock.internal.autoregister.AutoRegister
 import me.mkbaka.executableblock.internal.executes.Execute
 import me.mkbaka.executableblock.internal.extension.cooldown.CooldownManager
-import me.mkbaka.executableblock.internal.hook.nashorn.NashornHook
+import me.mkbaka.executableblock.internal.hook.nashorn.CompiledScriptFactory
 import me.mkbaka.executableblock.internal.hook.region.RegionManager
+import me.mkbaka.executableblock.internal.utils.ClassUtil
 import me.mkbaka.executableblock.internal.utils.FileUtil
+import me.mkbaka.executableblock.internal.utils.ItemUtil
 import me.mkbaka.executableblock.internal.utils.Util
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
-import taboolib.common5.cbool
-import javax.script.SimpleBindings
 
 @AutoRegister("js", alias = ["javascript"])
 object JavaScriptImpl : Execute {
@@ -22,21 +22,33 @@ object JavaScriptImpl : Execute {
         "CooldownManager" to CooldownManager,
         "RegionManager" to RegionManager,
         "Util" to Util,
-        "FileUtil" to FileUtil
+        "FileUtil" to FileUtil,
+        "ItemUtil" to ItemUtil,
+        "ClassUtil" to ClassUtil
     )
 
-    override fun eval(script: String, sender: CommandSender?, args: HashMap<String, Any>): Boolean {
-        return result(script, sender, args).cbool
+    override fun eval(script: String, sender: CommandSender, args: HashMap<String, Any>): Boolean {
+        return try {
+            CompiledScriptFactory.compiledCondition(script).eval(args.apply {
+                this["player"] = sender
+                putAll(bindings)
+            })
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            false
+        }
     }
 
     override fun result(script: String, sender: CommandSender?, args: HashMap<String, Any>): Any? {
+        return invokeMethod(script, args.apply { sender?.let { put("player", it) } })
+    }
+
+    private fun invokeMethod(script: String, args: HashMap<String, Any>): Any? {
         return try {
-            NashornHook.inst.compile(script).eval(SimpleBindings(args.apply {
-                sender?.let { this["player"] = it }
-                putAll(bindings)
-            }))
+            CompiledScriptFactory.compiled(script).invoke("invoke", map = args.apply { putAll(bindings) })
         } catch (e: Throwable) {
             e.printStackTrace()
+            null
         }
     }
 

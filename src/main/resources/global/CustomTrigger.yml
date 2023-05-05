@@ -8,7 +8,9 @@ Test:
         js: player.hasPermission("condition2")
       action: |-
         js: 
-          Bukkit.broadcastMessage(player.name + " 死在了 §e" + Util.format(player.location))
+          function invoke() {
+            Bukkit.broadcastMessage(this.player.name + " 死在了 §e" + Util.format(this.player.location))
+          }
     # else 分支为 以上条件均不满足时执行的动作
     - else:
         action: |-

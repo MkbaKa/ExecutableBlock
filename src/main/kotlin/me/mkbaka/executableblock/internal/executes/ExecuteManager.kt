@@ -3,7 +3,6 @@ package me.mkbaka.executableblock.internal.executes
 import me.mkbaka.executableblock.api.block.Registerable
 import me.mkbaka.executableblock.internal.executes.impl.KetherImpl
 import org.bukkit.command.CommandSender
-import taboolib.common5.cbool
 import kotlin.reflect.KClass
 
 object ExecuteManager : Registerable<Execute>() {
@@ -19,7 +18,12 @@ object ExecuteManager : Registerable<Execute>() {
      * @return [Boolean]
      */
     fun execute(script: String, sender: CommandSender, args: HashMap<String, Any> = hashMapOf()): Boolean {
-        return result(script, sender, args).cbool
+        registers.forEach { (prefix, exec) ->
+            if (script.startsWith(prefix)) {
+                return exec.eval(script.removePrefix("$prefix:"), sender, args)
+            }
+        }
+        return KetherImpl.eval(script, sender, args)
     }
 
     /**

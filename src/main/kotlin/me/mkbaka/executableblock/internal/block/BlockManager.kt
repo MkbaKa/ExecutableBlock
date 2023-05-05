@@ -6,7 +6,6 @@ import me.mkbaka.executableblock.internal.trigger.BukkitEventAdapter
 import me.mkbaka.executableblock.internal.trigger.TriggerManager
 import org.bukkit.Location
 import org.bukkit.block.Block
-import org.bukkit.event.Event
 import java.util.concurrent.ConcurrentHashMap
 import me.mkbaka.executableblock.internal.storage.Storage.Companion.inst as storage
 
@@ -91,13 +90,13 @@ object BlockManager {
      * 防止某些傻逼情况出现
      * 比如 BlockBreakEvent 在破坏时会被 PlayerInteractEvent 监听到而报错
      */
-    fun isSameTrigger(loc: Location, trigger: Trigger<Event>): Boolean {
+    fun isSameTrigger(loc: Location, trigger: Trigger<*>): Boolean {
         if (!locCaches.containsKey(loc)) return false
         val exec = getBoundExecute(loc) ?: return false
         return SettingManager.getExecutor(exec)?.trigger?.equals(trigger) ?: false
     }
 
-    fun isSameTrigger(block: Block, trigger: Trigger<Event>): Boolean {
+    fun isSameTrigger(block: Block, trigger: Trigger<*>): Boolean {
         return isSameTrigger(block.location, trigger)
     }
 

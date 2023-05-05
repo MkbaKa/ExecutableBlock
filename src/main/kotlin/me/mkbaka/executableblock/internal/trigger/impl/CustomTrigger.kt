@@ -1,6 +1,5 @@
 package me.mkbaka.executableblock.internal.trigger.impl
 
-import me.mkbaka.executableblock.api.block.EventAdapter
 import me.mkbaka.executableblock.internal.executes.impl.JavaScriptImpl
 import me.mkbaka.executableblock.internal.trigger.BukkitEventAdapter
 import me.mkbaka.executableblock.internal.trigger.BukkitTrigger
@@ -15,8 +14,7 @@ class CustomTrigger(val config: Configuration, val section: String) : BukkitTrig
     override val eventClass: Class<out Event>
         get() = config.getString("$section.bind")!!.toBukkitEvent()
 
-    override fun getBlock(event: EventAdapter): Block? {
-        if (event !is BukkitEventAdapter) return null
+    override fun getBlock(event: BukkitEventAdapter): Block? {
         if (!config.isString("$section.override.getBlock")) return super.getBlock(event)
         return JavaScriptImpl.result(
             config.getString("$section.override.getBlock")!!,
@@ -24,8 +22,7 @@ class CustomTrigger(val config: Configuration, val section: String) : BukkitTrig
         ) as? Block
     }
 
-    override fun getPlayer(event: EventAdapter): Player? {
-        if (event !is BukkitEventAdapter) return null
+    override fun getPlayer(event: BukkitEventAdapter): Player? {
         if (!config.isString("$section.override.getPlayer")) return super.getPlayer(event)
         return JavaScriptImpl.result(
             config.getString("$section.override.getPlayer")!!,
@@ -33,14 +30,14 @@ class CustomTrigger(val config: Configuration, val section: String) : BukkitTrig
         ) as? Player
     }
 
-    override fun condition(event: EventAdapter): Boolean {
-        if (event !is BukkitEventAdapter) return false
+    override fun condition(event: BukkitEventAdapter): Boolean {
         if (!config.isString("$section.override.condition")) return super.condition(event)
         var script = config.getString("$section.override.condition")!!
-        if (script.contains("super.condition()")) script = script.replace("super.condition()", super.condition(event).toString())
+        if (script.contains("super.condition()")) script =
+            script.replace("super.condition()", super.condition(event).toString())
         return JavaScriptImpl.eval(
             script,
-            getPlayer(event),
+            getPlayer(event)!!,
             args = hashMapOf("event" to event.event)
         )
     }

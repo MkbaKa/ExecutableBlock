@@ -1,6 +1,5 @@
 package me.mkbaka.executableblock.internal.trigger.impl
 
-import me.mkbaka.executableblock.api.block.EventAdapter
 import me.mkbaka.executableblock.internal.autoregister.AutoRegister
 import me.mkbaka.executableblock.internal.trigger.BukkitEventAdapter
 import me.mkbaka.executableblock.internal.trigger.BukkitTrigger
@@ -18,17 +17,17 @@ object PlayerLeftClickTrigger : BukkitTrigger() {
     override val eventClass: Class<out Event>
         get() = PlayerInteractEvent::class.java
 
-    override fun getBlock(event: EventAdapter): Block? {
-        return ((event as BukkitEventAdapter).event as? PlayerInteractEvent)?.clickedBlock
+    override fun getBlock(event: BukkitEventAdapter): Block? {
+        return (event.event as? PlayerInteractEvent)?.clickedBlock
     }
 
-    override fun getPlayer(event: EventAdapter): Player? {
-        return ((event as BukkitEventAdapter).event as? PlayerEvent)?.player
+    override fun getPlayer(event: BukkitEventAdapter): Player? {
+        return (event.event as? PlayerEvent)?.player
     }
 
-    override fun condition(event: EventAdapter): Boolean {
-        val e = (event as BukkitEventAdapter).event as? PlayerInteractEvent ?: return false
-        return e.action == Action.LEFT_CLICK_BLOCK && e.hand == EquipmentSlot.HAND && super.condition(event)
+    override fun condition(event: BukkitEventAdapter): Boolean {
+        val e = event.event as? PlayerInteractEvent ?: return false
+        return e.hand == EquipmentSlot.HAND && e.action == Action.LEFT_CLICK_BLOCK && super.condition(event)
     }
 
 }

@@ -2,7 +2,6 @@ package me.mkbaka.executableblock.internal.trigger
 
 import me.mkbaka.executableblock.api.block.Registerable
 import me.mkbaka.executableblock.api.block.Trigger
-import me.mkbaka.executableblock.internal.block.BlockManager
 import me.mkbaka.executableblock.internal.trigger.impl.CustomTrigger
 import org.bukkit.event.Event
 import taboolib.common.platform.event.EventPriority
@@ -15,9 +14,7 @@ import kotlin.reflect.KClass
 object TriggerManager : Registerable<BukkitTrigger>() {
 
     private val customTriggers = ConcurrentHashMap<BukkitTrigger, ProxyListener>()
-
     val eventToTrigger = ConcurrentHashMap<Class<out Event>, BukkitTrigger>()
-
     override val root: KClass<BukkitTrigger>
         get() = BukkitTrigger::class
 
@@ -26,7 +23,7 @@ object TriggerManager : Registerable<BukkitTrigger>() {
      * @param [key] key
      * @return [Trigger<Event>]
      */
-    fun keyToTrigger(key: String): Trigger<Event> {
+    fun keyToTrigger(key: String): Trigger<*> {
         return registers.entries.find { it.key == key }?.value ?: error("错误的 trigger 类型 $key")
     }
 
@@ -39,7 +36,7 @@ object TriggerManager : Registerable<BukkitTrigger>() {
             trigger.eventClass, EventPriority.LOWEST, true
         ) {
             val adapter = BukkitEventAdapter(it)
-            if (!trigger.condition(adapter)) return@registerBukkitListener BlockManager.callExecute(null, adapter)
+            if (!trigger.condition(adapter)) return@registerBukkitListener
 
             trigger.call(adapter)
         }

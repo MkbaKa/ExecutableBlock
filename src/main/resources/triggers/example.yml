@@ -14,12 +14,18 @@ CustomTrigger:
   override:
     # 获取玩家
     getPlayer: |-
-      event.entity
+      function invoke() {
+        return this.event.entity
+      }
     # 获取方块
     getBlock: |-
-      event.entity.location.block
+      function invoke() {
+        return this.event.entity.location.subtract(0, 0.5, 0).block
+      }
     # 事件触发的条件
     # super.condition() 指的是:
     # https://github.com/MkbaKa/ExecutableBlock/blob/main/src/main/kotlin/me/mkbaka/executableblock/internal/trigger/BukkitTrigger.kt#23
     condition: |-
-      super.condition()
+      function invoke() {
+        return super.condition()
+      }

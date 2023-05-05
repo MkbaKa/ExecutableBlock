@@ -2,8 +2,24 @@ package me.mkbaka.executableblock.internal.utils
 
 import org.bukkit.Location
 import org.bukkit.block.Block
+import org.bukkit.entity.Player
+import taboolib.module.chat.colored
+import taboolib.module.chat.uncolored
+import taboolib.platform.compat.replacePlaceholder
 
 object Util {
+
+    fun String.parsePapi(player: Player): String {
+        return this.replacePlaceholder(player)
+    }
+
+    fun String.color(): String {
+        return this.colored()
+    }
+
+    fun String.uncolor(): String {
+        return this.uncolored()
+    }
 
     fun Block.format(): String {
         return "${type.name}, ${world.name}, ${location.blockX}, ${location.blockY}, ${location.blockZ}"

@@ -1,6 +1,5 @@
 package me.mkbaka.executableblock.internal.trigger.impl
 
-import me.mkbaka.executableblock.api.block.EventAdapter
 import me.mkbaka.executableblock.internal.autoregister.AutoRegister
 import me.mkbaka.executableblock.internal.trigger.BukkitEventAdapter
 import me.mkbaka.executableblock.internal.trigger.BukkitTrigger
@@ -15,12 +14,12 @@ object BlockBreakTrigger : BukkitTrigger() {
     override val eventClass: Class<out Event>
         get() = BlockBreakEvent::class.java
 
-    override fun getBlock(event: EventAdapter): Block? {
-        return ((event as BukkitEventAdapter).event as? BlockBreakEvent)?.block
+    override fun getBlock(event: BukkitEventAdapter): Block? {
+        return (event.event as? BlockBreakEvent)?.block
     }
 
-    override fun getPlayer(event: EventAdapter): Player {
-        return ((event as BukkitEventAdapter).event as BlockBreakEvent).player
+    override fun getPlayer(event: BukkitEventAdapter): Player? {
+        return (event.event as BlockBreakEvent).player
     }
 
 }

@@ -22,11 +22,18 @@ Test:
     # player - 执行当前脚本的玩家
     - condition: "ke: perm condition1"
       action: |-
-        print &event
+        js:
+          function invoke() {
+            const item = ItemUtil.getMainHandItem(this.player)
+            this.player.sendMessage("你正在用 " + ItemUtil.getName(item, this.player) + " 点击 " + this.block.type)
+          }
     - condition: |-
         js: player.hasPermission("condition2")
       action: |-
-        js: print(event.player.name)
+        js: 
+          function invoke() {
+            print(this.player.name)
+          }
     # else 分支为 以上条件均不满足时执行的动作
     - else:
         action: |-
@@ -48,11 +55,11 @@ Break:
         js: player.hasPermission("vip1")
       action: |-
         js: 
-          const ItemStack = Packages.org.bukkit.inventory.ItemStack
-          const Material = Packages.org.bukkit.Material
-          Bukkit.broadcastMessage(player.name + " 从 " + event.block.type + " 中挖到了一块泥土!")
-          const loc = event.block.location
-          loc.world.dropItem(loc, new ItemStack(Material.DIRT))
+          function invoke() {
+            Bukkit.broadcastMessage(this.player.name + " 从 " + this.event.block.type + " 中挖到了一块泥土!")
+            const loc = this.block.location
+            loc.world.dropItem(loc, new ItemStack(Material.DIRT))
+          }
     # 普通玩家
     - else:
         # 画个饼先
@@ -86,11 +93,13 @@ MoveExample:
         js: CooldownManager.isTimeout(player.uniqueId, "MoveExample")
       action: |-
         js:
-          const uuid = player.uniqueId
-          CooldownManager.addCooling(uuid, "MoveExample", 10000)
-          if (player.hasPermission("vip1")) {
-            player.sendMessage("你是尊贵的vip1玩家! 系统贴心的为你减少25%地雷的冷却时间!")
-            CooldownManager.takeCooling(uuid, "MoveExample", 2500)
+          function invoke() {
+            const uuid = this.player.uniqueId
+            CooldownManager.addCooling(uuid, "MoveExample", 10000)
+            if (this.player.hasPermission("vip1")) {
+              this.player.sendMessage("你是尊贵的vip1玩家! 系统贴心的为你减少25%地雷的冷却时间!")
+              CooldownManager.takeCooling(uuid, "MoveExample", 2500)
+            }
+            this.player.sendMessage("距离下次地雷引爆还有 " + (CooldownManager.getTime(uuid, "MoveExample") / 1000) + " 秒!")
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill " + this.player.name)
           }
-          player.sendMessage("距离下次地雷引爆还有 " + (CooldownManager.getTime(uuid, "MoveExample") / 1000) + " 秒!")
-          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill " + player.name)

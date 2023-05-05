@@ -1,5 +1,6 @@
 package me.mkbaka.executableblock.internal.settings
 
+import me.mkbaka.executableblock.internal.hook.nashorn.CompiledScriptFactory
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.module.configuration.Config
@@ -9,7 +10,6 @@ object Settings {
 
     @Config("settings.yml")
     lateinit var settings: ConfigFile
-
     var updatePeriod: Long = 0
 
     @Awake(LifeCycle.ACTIVE)
@@ -23,5 +23,6 @@ object Settings {
     fun reload() {
         settings.reload()
         SettingManager.callReload()
+        CompiledScriptFactory.reload()
     }
 }

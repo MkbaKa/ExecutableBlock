@@ -7,16 +7,15 @@ import me.mkbaka.executableblock.internal.settings.Configurations
 import me.mkbaka.executableblock.internal.trigger.TriggerManager
 import me.mkbaka.executableblock.internal.utils.FileUtil.loadSections
 import me.mkbaka.executableblock.internal.utils.FileUtil.toGlobal
-import org.bukkit.event.Event
 import java.io.File
 
 @AutoRegister("global")
-object GlobalExecutors : Configurations<Trigger<Event>, HashMap<String, Executor>>() {
+object GlobalExecutors : Configurations<Trigger<*>, HashMap<String, Executor>>() {
 
     override val path: String
         get() = "global"
-    override val example: String
-        get() = "example.yml"
+    override val examples: List<String>
+        get() = listOf("$path/example.yml")
 
     override fun onReload(file: File) {
         file.loadSections { config, section ->

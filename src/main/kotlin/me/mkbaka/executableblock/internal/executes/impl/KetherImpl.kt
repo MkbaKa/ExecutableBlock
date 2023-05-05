@@ -10,7 +10,7 @@ import taboolib.module.kether.ScriptOptions
 @AutoRegister("ke", alias = ["kether", "ks"])
 object KetherImpl : Execute {
 
-    override fun eval(script: String, sender: CommandSender?, args: HashMap<String, Any>): Boolean {
+    override fun eval(script: String, sender: CommandSender, args: HashMap<String, Any>): Boolean {
         return result(script, sender, args).cbool
     }
 
