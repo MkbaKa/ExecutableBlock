@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkebdoc=self.webpackChunkebdoc||[]).push([[1731],{2597:e=>{e.exports=JSON.parse('{"label":"hello","permalink":"/ExecutableBlock-wiki/blog/tags/hello","allTagsPath":"/ExecutableBlock-wiki/blog/tags","count":2}')}}]);
