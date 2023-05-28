@@ -11,11 +11,13 @@ object Settings {
     @Config("settings.yml")
     lateinit var settings: ConfigFile
     var updatePeriod: Long = 0
+    var enableRegionListener: Boolean = false
 
     @Awake(LifeCycle.ACTIVE)
     fun active() {
         settings.onReload {
             updatePeriod = settings.getLong("Storage.period") * 20
+            enableRegionListener = settings.getBoolean("Region.listener")
         }
         reload()
     }

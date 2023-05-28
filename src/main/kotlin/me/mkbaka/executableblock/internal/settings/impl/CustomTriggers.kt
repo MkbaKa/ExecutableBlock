@@ -14,8 +14,6 @@ object CustomTriggers : Configurations<String, BukkitTrigger>() {
 
     override val path: String
         get() = "triggers"
-    override val examples: List<String>
-        get() = listOf("$path/example.yml", "global/CustomTrigger.yml")
 
     override fun preReload() {
         TriggerManager.unRegisterCustomListener()

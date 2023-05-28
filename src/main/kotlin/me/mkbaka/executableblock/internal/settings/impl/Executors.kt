@@ -11,8 +11,6 @@ object Executors : Configurations<String, Executor>() {
 
     override val path: String
         get() = "executes"
-    override val examples: List<String>
-        get() = listOf("$path/default.yml")
 
     override fun onReload(file: File) {
         file.loadSections { config, section ->

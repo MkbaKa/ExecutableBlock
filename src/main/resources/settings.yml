@@ -3,3 +3,8 @@ Storage:
   type: json
   # 同步间隔 (秒)
   period: 1800
+
+# 区域配置
+Region:
+  # 是否开启区域监听并处理
+  listener: false

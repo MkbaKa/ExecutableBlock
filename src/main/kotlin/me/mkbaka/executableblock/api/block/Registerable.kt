@@ -11,14 +11,13 @@ abstract class Registerable<T : Any> {
     val registers = ConcurrentHashMap<String, T>()
 
     abstract val root: KClass<T>
+
     open fun register(clazz: KClass<*>, callback: (T) -> Unit = {}) {
         if (clazz.isSubclassOf(root)) {
             val inst = clazz.objectInstance as? T ?: return
             val register = clazz.findAnnotations(AutoRegister::class).first()
 
-            register(register.alias.plus(register.name), inst)
-
-            callback(inst)
+            register(register.alias.plus(register.name), inst, callback)
         }
     }
 

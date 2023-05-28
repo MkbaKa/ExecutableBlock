@@ -14,8 +14,6 @@ object GlobalExecutors : Configurations<Trigger<*>, HashMap<String, Executor>>()
 
     override val path: String
         get() = "global"
-    override val examples: List<String>
-        get() = listOf("$path/example.yml")
 
     override fun onReload(file: File) {
         file.loadSections { config, section ->

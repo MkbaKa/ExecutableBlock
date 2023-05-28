@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender
 import taboolib.common5.cbool
 import taboolib.module.kether.KetherShell
 import taboolib.module.kether.ScriptOptions
+import java.util.concurrent.TimeUnit
 
 @AutoRegister("ke", alias = ["kether", "ks"])
 object KetherImpl : Execute {
@@ -22,9 +23,10 @@ object KetherImpl : Execute {
                     vars(args)
                     namespace(listOf("ExecutableBlock"))
                 }
-            ).get()
-        } catch (e: Throwable) {
+            ).get(1000, TimeUnit.MILLISECONDS)
+        } catch (e: Exception) {
             e.printStackTrace()
+            null
         }
     }
 

@@ -10,7 +10,7 @@ import javax.script.*
 
 @RuntimeDependencies(
     RuntimeDependency(
-        "!org.openjdk.nashorn:nashorn-core:15.4",
+        "org.openjdk.nashorn:nashorn-core:15.4",
         test = "!jdk.nashorn.api.scripting.NashornScriptEngineFactory"
     )
 )

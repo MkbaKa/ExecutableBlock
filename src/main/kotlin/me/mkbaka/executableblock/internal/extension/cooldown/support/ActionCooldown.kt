@@ -6,7 +6,7 @@ import taboolib.module.kether.*
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 
-class CooldownKether {
+class ActionCooldown {
 
     class Get(val source: String) : ScriptAction<Long>() {
 

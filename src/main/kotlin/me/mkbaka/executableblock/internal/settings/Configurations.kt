@@ -15,9 +15,6 @@ import java.util.concurrent.ConcurrentHashMap
 abstract class Configurations<K, V> : ConcurrentHashMap<K, V>() {
 
     abstract val path: String
-    open val examples: List<String>
-        get() = emptyList()
-
     open fun preReload() {}
 
     abstract fun onReload(file: File)
@@ -42,7 +39,6 @@ abstract class Configurations<K, V> : ConcurrentHashMap<K, V>() {
 
     init {
         newFile(getDataFolder(), path, folder = true, create = true)
-        if (examples.isNotEmpty()) examples.forEach(::releaseResource)
     }
 
 }

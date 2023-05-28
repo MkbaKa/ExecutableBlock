@@ -21,8 +21,11 @@ taboolib {
     classifier = null
     version = "6.0.10-117"
 
-    relocate("org.openjdk", "executableblock.org.openjdk")
     description {
+        dependencies {
+            name("WorldGuard").optional(true)
+        }
+
         contributors {
             name("Mkbakaa")
         }

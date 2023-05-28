@@ -1,6 +1,7 @@
 package me.mkbaka.executableblock.internal.hook.region
 
 import me.mkbaka.executableblock.api.event.RegionEvent
+import me.mkbaka.executableblock.internal.settings.Settings
 import me.mkbaka.executableblock.internal.utils.Util.notNullIgnoreEquals
 import org.bukkit.Location
 import org.bukkit.entity.Player
@@ -9,7 +10,6 @@ import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.function.registerBukkitListener
-import taboolib.common.platform.function.releaseResourceFile
 
 /**
  * 区域管理
@@ -83,8 +83,7 @@ object RegionManager {
      */
     @Awake(LifeCycle.ACTIVE)
     fun reg() {
-        if (RegionHook.inst == null) return
-        releaseResourceFile("global/AntiMove.yml", replace = false)
+        if (RegionHook.inst == null || !Settings.enableRegionListener) return
 
         registerBukkitListener(
             PlayerMoveEvent::class.java, EventPriority.HIGHEST, false

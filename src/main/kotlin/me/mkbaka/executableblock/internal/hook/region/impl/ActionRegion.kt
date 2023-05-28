@@ -7,7 +7,7 @@ import taboolib.library.kether.ParsedAction
 import taboolib.module.kether.*
 import java.util.concurrent.CompletableFuture
 
-class RegionKether {
+class ActionRegion {
 
     class InRegion(val region: ParsedAction<*>) : ScriptAction<Boolean>() {
         override fun run(frame: ScriptFrame): CompletableFuture<Boolean> {
