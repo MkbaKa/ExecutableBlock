@@ -23,6 +23,7 @@ taboolib {
 
     description {
         dependencies {
+            name("Residence").optional(true)
             name("WorldGuard").optional(true)
         }
 

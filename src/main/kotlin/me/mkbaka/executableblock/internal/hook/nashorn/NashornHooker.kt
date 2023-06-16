@@ -91,7 +91,7 @@ abstract class NashornHooker {
      * @param [map] 顶级变量
      * @return
      */
-    abstract fun eval(compiledScript: CompiledScript, map: Map<String, Any>): Boolean
+    abstract fun eval(compiledScript: CompiledScript, map: Map<String, Any>): Any?
 
     /**
      * 检测引擎中是否包含对应函数

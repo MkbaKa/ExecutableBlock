@@ -66,7 +66,7 @@ open class CompiledScript {
         return inst.invoke(this, function, map, *args)
     }
 
-    fun eval(map: Map<String, Any>): Boolean {
+    fun eval(map: Map<String, Any>): Any? {
         return inst.eval(compiledScript, map)
     }
 

@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 
 @RuntimeDependencies(
     RuntimeDependency("!javassist:javassist:3.12.1.GA", test = "javassist.bytecode.ClassFile"),
-    RuntimeDependency("!org.reflections:reflections:0.10.2", test = "org.reflections.Reflections")
+    RuntimeDependency("org.reflections:reflections:0.10.2", test = "executableblock.org.reflections.Reflections")
 )
 class AutoRegisterScanner(
     private val classLoader: ClassLoader

@@ -28,6 +28,19 @@ object JavaScriptImpl : Execute {
     )
 
     override fun eval(script: String, sender: CommandSender, args: HashMap<String, Any>): Boolean {
+        val result = try {
+            evalScript(script, sender, args)
+        } catch (e: Throwable) {
+            false
+        }
+        return when (result) {
+            is Boolean -> result
+            null -> true
+            else -> false
+        }
+    }
+
+    override fun evalScript(script: String, sender: CommandSender, args: HashMap<String, Any>): Any? {
         return try {
             CompiledScriptFactory.compiledCondition(script).eval(args.apply {
                 this["player"] = sender
@@ -35,17 +48,15 @@ object JavaScriptImpl : Execute {
             })
         } catch (e: Throwable) {
             e.printStackTrace()
-            false
         }
     }
 
     override fun result(script: String, sender: CommandSender?, args: HashMap<String, Any>): Any? {
-        return invokeMethod(script, args.apply { sender?.let { put("player", it) } })
-    }
-
-    private fun invokeMethod(script: String, args: HashMap<String, Any>): Any? {
         return try {
-            CompiledScriptFactory.compiled(script).invoke("invoke", map = args.apply { putAll(bindings) })
+            CompiledScriptFactory.compiled(script).invoke("invoke", map = args.apply {
+                putAll(bindings)
+                sender?.let { put("player", it) }
+            })
         } catch (e: Throwable) {
             e.printStackTrace()
             null

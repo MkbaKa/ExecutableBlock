@@ -26,6 +26,15 @@ object ExecuteManager : Registerable<Execute>() {
         return KetherImpl.eval(script, sender, args)
     }
 
+    fun evalScript(script: String, sender: CommandSender, args: HashMap<String, Any> = hashMapOf()): Any? {
+        registers.forEach { (prefix, exec) ->
+            if (script.startsWith(prefix)) {
+                return exec.evalScript(script.removePrefix("$prefix:"), sender, args)
+            }
+        }
+        return KetherImpl.evalScript(script, sender, args)
+    }
+
     /**
      * 获取脚本执行结果
      * @param [script] 脚本

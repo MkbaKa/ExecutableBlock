@@ -6,13 +6,16 @@ import org.bukkit.command.CommandSender
 import taboolib.common5.cbool
 import taboolib.module.kether.KetherShell
 import taboolib.module.kether.ScriptOptions
-import java.util.concurrent.TimeUnit
 
 @AutoRegister("ke", alias = ["kether", "ks"])
 object KetherImpl : Execute {
 
     override fun eval(script: String, sender: CommandSender, args: HashMap<String, Any>): Boolean {
         return result(script, sender, args).cbool
+    }
+
+    override fun evalScript(script: String, sender: CommandSender, args: HashMap<String, Any>): Any? {
+        return result(script, sender, args)
     }
 
     override fun result(script: String, sender: CommandSender?, args: HashMap<String, Any>): Any? {
@@ -23,7 +26,7 @@ object KetherImpl : Execute {
                     vars(args)
                     namespace(listOf("ExecutableBlock"))
                 }
-            ).get(1000, TimeUnit.MILLISECONDS)
+            ).getNow(null)
         } catch (e: Exception) {
             e.printStackTrace()
             null

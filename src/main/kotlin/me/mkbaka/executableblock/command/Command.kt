@@ -1,9 +1,11 @@
 package me.mkbaka.executableblock.command
 
 import me.mkbaka.executableblock.ExecutableBlock.prefix
+import me.mkbaka.executableblock.internal.executes.ExecuteManager
 import me.mkbaka.executableblock.internal.settings.Settings
 import taboolib.common.platform.ProxyCommandSender
 import taboolib.common.platform.command.*
+import taboolib.common.platform.function.info
 import taboolib.expansion.createHelper
 import taboolib.module.lang.sendLang
 
@@ -23,6 +25,15 @@ object Command {
 
     @CommandBody
     val exten = ExtenCommand
+
+    @CommandBody
+    val eval = subCommand {
+        dynamic("script") {
+            execute<ProxyCommandSender> { sender, context, argument ->
+                info("Result: §7${ExecuteManager.evalScript(argument, sender.cast())}")
+            }
+        }
+    }
 
     @CommandBody
     val reload = subCommand {

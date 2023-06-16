@@ -46,17 +46,8 @@ class NashornHookerImpl : NashornHooker() {
         return newObject.callMember(function, *args)
     }
 
-    override fun eval(compiledScript: CompiledScript, map: Map<String, Any>): Boolean {
-        val result = try {
-            compiledScript.eval(SimpleBindings(map))
-        } catch (e: Throwable) {
-            false
-        }
-        return when (result) {
-            is Boolean -> result
-            null -> true
-            else -> false
-        }
+    override fun eval(compiledScript: CompiledScript, map: Map<String, Any>): Any? {
+        return compiledScript.eval(SimpleBindings(map))
     }
 
     override fun isFunction(engine: ScriptEngine, func: Any?): Boolean {
