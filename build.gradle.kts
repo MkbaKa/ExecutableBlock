@@ -25,12 +25,15 @@ taboolib {
         dependencies {
             name("Residence").optional(true)
             name("WorldGuard").optional(true)
+            name("MythicMobs").optional(true)
         }
 
         contributors {
             name("Mkbakaa")
         }
     }
+
+    relocate("org.reflections.Reflections", "me.mkbaka.executableblock.org.reflections.Reflections")
 }
 
 repositories {
