@@ -30,7 +30,7 @@ object Command {
     val eval = subCommand {
         dynamic("script") {
             execute<ProxyCommandSender> { sender, context, argument ->
-                info("Result: §7${ExecuteManager.evalScript(argument, sender.cast())}")
+                sender.sendMessage("Result: §7${ExecuteManager.result(argument, sender.cast(), hashMapOf(), isFunc = false)}")
             }
         }
     }

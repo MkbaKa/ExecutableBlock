@@ -26,13 +26,14 @@ object ExecuteManager : Registerable<Execute>() {
         return KetherImpl.eval(script, sender, args)
     }
 
-    fun evalScript(script: String, sender: CommandSender, args: HashMap<String, Any> = hashMapOf()): Any? {
+    fun evalScript(script: String, sender: CommandSender, args: HashMap<String, Any> = hashMapOf()) {
         registers.forEach { (prefix, exec) ->
             if (script.startsWith(prefix)) {
-                return exec.evalScript(script.removePrefix("$prefix:"), sender, args)
+                exec.evalScript(script.removePrefix("$prefix:"), sender, args)
+                return
             }
         }
-        return KetherImpl.evalScript(script, sender, args)
+        KetherImpl.evalScript(script, sender, args)
     }
 
     /**
@@ -42,13 +43,13 @@ object ExecuteManager : Registerable<Execute>() {
      * @param [args] 参数
      * @return [Any?]
      */
-    fun result(script: String, sender: CommandSender, args: HashMap<String, Any> = hashMapOf()): Any? {
+    fun result(script: String, sender: CommandSender, args: HashMap<String, Any> = hashMapOf(), isFunc: Boolean = false): Any? {
         registers.forEach { (prefix, exec) ->
             if (script.startsWith(prefix)) {
-                return exec.result(script.removePrefix("$prefix:"), sender, args)
+                return exec.result(script.removePrefix("$prefix:"), sender, args, isFunc)
             }
         }
-        return KetherImpl.result(script, sender, args)
+        return KetherImpl.result(script, sender, args, isFunc)
     }
 
 }

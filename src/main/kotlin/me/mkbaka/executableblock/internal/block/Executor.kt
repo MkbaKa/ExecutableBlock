@@ -41,7 +41,7 @@ class Executor(val root: ConfigurationSection, trigger: BukkitTrigger? = null) {
         }
 
         fun evalAction(event: BukkitEventAdapter, player: Player, block: Block) {
-            ExecuteManager.result(action, player, hashMapOf("event" to event.event, "block" to block))
+            ExecuteManager.evalScript(action, player, hashMapOf("event" to event.event, "block" to block))
         }
 
     }

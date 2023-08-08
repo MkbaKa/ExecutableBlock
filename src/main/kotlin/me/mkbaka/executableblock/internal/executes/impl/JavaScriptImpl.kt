@@ -29,7 +29,7 @@ object JavaScriptImpl : Execute {
 
     override fun eval(script: String, sender: CommandSender, args: HashMap<String, Any>): Boolean {
         val result = try {
-            evalScript(script, sender, args)
+            runScript(script, sender, args, false)
         } catch (e: Throwable) {
             false
         }
@@ -40,27 +40,43 @@ object JavaScriptImpl : Execute {
         }
     }
 
-    override fun evalScript(script: String, sender: CommandSender, args: HashMap<String, Any>): Any? {
-        return try {
-            CompiledScriptFactory.compiledCondition(script).eval(args.apply {
-                this["player"] = sender
-                putAll(bindings)
-            })
-        } catch (e: Throwable) {
-            e.printStackTrace()
-        }
+    override fun evalScript(script: String, sender: CommandSender, args: HashMap<String, Any>) {
+        runScript(script, sender, args, true)
     }
 
-    override fun result(script: String, sender: CommandSender?, args: HashMap<String, Any>): Any? {
+    override fun result(script: String, sender: CommandSender?, args: HashMap<String, Any>, isFunc: Boolean): Any? {
         return try {
-            CompiledScriptFactory.compiled(script).invoke("invoke", map = args.apply {
-                putAll(bindings)
-                sender?.let { put("player", it) }
-            })
+            runScript(script, sender, args, isFunc)
         } catch (e: Throwable) {
             e.printStackTrace()
             null
         }
+    }
+
+    private fun runScript(
+        script: String,
+        sender: CommandSender?,
+        args: HashMap<String, Any>,
+        invoke: Boolean = false
+    ): Any? {
+        val map = args.apply {
+            putAll(bindings)
+            sender?.let { put("player", it) }
+        }
+
+        val compiledScript = CompiledScriptFactory.compiled(script)
+
+        return try {
+            if (invoke) {
+                compiledScript.invoke("invoke", map)
+            } else {
+                compiledScript.eval(map)
+            }
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            null
+        }
+
     }
 
 }

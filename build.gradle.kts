@@ -19,7 +19,7 @@ taboolib {
     install("expansion-command-helper")
     options("skip-kotlin-relocate")
     classifier = null
-    version = "6.0.10-117"
+    version = "6.0.11-31"
 
     description {
         dependencies {
@@ -68,4 +68,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+tasks.withType<Jar> {
+    destinationDirectory = File("E:\\Servers\\1.20.1\\plugins")
 }
